@@ -28,4 +28,5 @@
 1. 准备工作：安装 Go(1.19)、MySQL(8.x)、Redis(7.x) 和 Git。
 2. 克隆代码：`git clone https://github.com/fooins/opsmgt-backend.git`。
 3. 安装依赖：`go mod tidy`。
-4. 启动程序：`go run ./src/.`。
+4. 安装 Air：`go install github.com/cosmtrek/air@latest`。
+5. 启动程序：`air`。
