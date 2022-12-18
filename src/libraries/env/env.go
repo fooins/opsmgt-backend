@@ -2,10 +2,11 @@ package env
 
 import (
 	"os"
+	"strings"
 )
 
 // 环境变量值
-var goEnv = os.Getenv("GO_ENV")
+var goEnv = strings.TrimSpace(os.Getenv("GO_ENV"))
 
 // 程序当前是否运行在生产环境下
 func IsProd() bool {
