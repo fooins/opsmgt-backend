@@ -17,3 +17,6 @@
 # Air
 airtmp/
 airtestdata/
+
+# log
+logs/
