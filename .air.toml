@@ -9,7 +9,7 @@ testdata_dir = "airtestdata"
 
 [build]
 # 每次文件变更后执行的命令
-cmd = "go build -o ./airtmp/opsmgt-backend.exe ./src"
+cmd = "set GO_ENV=development && go run ./src"
 # 运行二进制文件的命令
 bin = "airtmp\\opsmgt-backend.exe"
 # 运行二进制文件的命令，可以设置环境变量
