@@ -17,7 +17,7 @@ const (
 )
 
 // 错误码对应的默认消息
-var Message = map[string]string{
+var Messages = map[string]string{
 	UNAUTHORIZED:         "客户端未经授权",
 	ACCESS_DENIED:        "客户端没有执行该操作的权限",
 	INVALID_REQUEST:      "请求格式有误或不正确",
@@ -47,21 +47,43 @@ func (appError *AppError) Error() string {
 }
 
 // 创建一个统一错误
-func New(code string, message string, httpStatus int, isTrusted bool) AppError {
-	return AppError{
-		Code:       code,
-		Message:    message,
-		HttpStatus: httpStatus,
-		IsTrusted:  isTrusted,
-	}
-}
-
-// 创建一个默认的统一错误
-func NewDefault(message string) AppError {
-	return AppError{
+func New(message string, setOpts ...SetErrorOptions) AppError {
+	// 默认配置项
+	opts := &ErrorOptions{
 		Code:       INTERNAL_SERVERERROR,
-		Message:    message,
 		HttpStatus: http.StatusInternalServerError,
 		IsTrusted:  true,
 	}
+
+	// 覆盖默认配置项
+	for i := range setOpts {
+		setOpts[i](opts)
+	}
+
+	return AppError{
+		Code:       opts.Code,
+		Message:    message,
+		HttpStatus: opts.HttpStatus,
+		IsTrusted:  opts.IsTrusted,
+	}
+}
+
+// 格式化错误对象
+func NormalizeError(errorToHandle any, setOpts ...SetErrorOptions) AppError {
+	// 如果是统一错误则直接返回
+	if appError, ok := errorToHandle.(AppError); ok {
+		return appError
+	}
+
+	// 如果实现了 error 接口
+	if err, ok := errorToHandle.(error); ok {
+		return New(err.Error(), setOpts...)
+	}
+
+	// 如果是字符串
+	if str, ok := errorToHandle.(string); ok {
+		return New(str, setOpts...)
+	}
+
+	return New(fmt.Sprintf("错误处理程序收到一个未知的错误类型实例：%+v", errorToHandle), setOpts...)
 }
