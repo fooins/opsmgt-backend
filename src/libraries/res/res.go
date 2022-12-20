@@ -21,9 +21,14 @@ func Respond(ctx *gin.Context, httpStatus int, code string, message string, data
 	})
 }
 
-// 响应成功
-func ResSuccess(ctx *gin.Context, message string, data map[string]any) {
+// 响应成功并设置消息
+func ResSuccessWithMessage(ctx *gin.Context, data map[string]any, message string) {
 	Respond(ctx, http.StatusOK, "SUCCESS", message, data)
+}
+
+// 响应成功
+func ResSuccess(ctx *gin.Context, data map[string]any) {
+	ResSuccessWithMessage(ctx, data, "成功")
 }
 
 // 响应错误并携带数据

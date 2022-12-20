@@ -1,9 +1,7 @@
 package tests
 
 import (
-	"net/http"
-	"time"
-
+	"github.com/fooins/opsmgt-backend/src/libraries/res"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,8 +13,13 @@ func RouteRegister(group *gin.RouterGroup) {
 
 // 测试
 func getTest(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, gin.H{
-		"now":   time.Now(),
-		"query": ctx.Request.URL.Query(),
-	})
+	query := ctx.Request.URL.Query()
+
+	rst, err := Test(query)
+	if err != nil {
+		res.ResError(ctx, err)
+		return
+	}
+
+	res.ResSuccess(ctx, rst)
 }
