@@ -33,11 +33,6 @@ func HandleError(errorToHandle any, setOpts ...SetHandleOptions) AppError {
 	// 格式化错误对象
 	appError := NormalizeError(errorToHandle)
 
-	// 记录日志
-	l := logger.WithOptions(zap.AddCallerSkip(opts.CallerSkip))
-	l.Error(appError.Error(), opts.Fields...)
-	l.Sync()
-
 	defer func() {
 		// 异常处理
 		if err := recover(); err != nil {
@@ -51,6 +46,11 @@ func HandleError(errorToHandle any, setOpts ...SetHandleOptions) AppError {
 			os.Exit(1)
 		}
 	}()
+
+	// 记录日志
+	l := logger.WithOptions(zap.AddCallerSkip(opts.CallerSkip))
+	l.Error(appError.Error(), opts.Fields...)
+	l.Sync()
 
 	return appError
 }

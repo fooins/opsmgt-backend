@@ -40,9 +40,6 @@ func AccessLog() gin.HandlerFunc {
 		)
 		accessLogger.Sync()
 
-		// 处理下游中间件
-		ctx.Next()
-
 		// 记录响应日志
 		defer func() {
 			accessLogger.Info(
@@ -54,5 +51,8 @@ func AccessLog() gin.HandlerFunc {
 			)
 			accessLogger.Sync()
 		}()
+
+		// 处理下游中间件
+		ctx.Next()
 	}
 }
