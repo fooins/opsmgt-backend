@@ -19,6 +19,14 @@ var logger = log.GetLogger(
 
 // 处理错误
 func HandleError(errorToHandle any, setOpts ...SetHandleOptions) AppError {
+	// 异常处理
+	defer func() {
+		if err := recover(); err != nil {
+			// 这里没有记录日志，因为它可能已经失败了
+			fmt.Printf("错误处理失败，这是失败信息，以及它试图处理的原始错误信息：%+v %+v", err, errorToHandle)
+		}
+	}()
+
 	// 默认配置项
 	opts := &HandleOptions{
 		Fields:     []zap.Field{},
@@ -33,14 +41,8 @@ func HandleError(errorToHandle any, setOpts ...SetHandleOptions) AppError {
 	// 格式化错误对象
 	appError := NormalizeError(errorToHandle)
 
+	// 不可信的错误触发服务和进程关闭
 	defer func() {
-		// 异常处理
-		if err := recover(); err != nil {
-			// 这里没有记录日志，因为它可能已经失败了
-			fmt.Printf("错误处理失败，这是失败信息，以及它试图处理的原始错误信息：%+v %+v", err, errorToHandle)
-		}
-
-		// 不可信的错误触发服务和进程关闭
 		if !appError.IsTrusted {
 			// TODO: https://github.com/gin-gonic/examples/tree/master/graceful-shutdown
 			os.Exit(1)
