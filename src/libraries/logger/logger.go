@@ -23,7 +23,7 @@ var encoderConfig = zapcore.EncoderConfig{
 	FunctionKey:   "func",
 	StacktraceKey: "stack",
 
-	SkipLineEnding: true,
+	SkipLineEnding: false,
 	LineEnding:     zapcore.DefaultLineEnding,
 
 	EncodeLevel:    zapcore.CapitalLevelEncoder,
