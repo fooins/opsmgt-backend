@@ -13,6 +13,9 @@ func NewApp() *gin.Engine {
 	// 处理请求ID
 	app.Use(middlewares.RequestId())
 
+	// 记录访问日志
+	app.Use(middlewares.AccessLog())
+
 	// 设置路由
 	Routeing(app)
 
