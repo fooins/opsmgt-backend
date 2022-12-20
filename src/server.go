@@ -6,5 +6,8 @@ func StartHttpServer() {
 	app := NewApp()
 
 	// 启动服务
-	app.Run()
+	err := app.Run()
+	if err != nil {
+		panic(err)
+	}
 }
