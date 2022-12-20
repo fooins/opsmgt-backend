@@ -37,11 +37,6 @@ var encoderConfig = zapcore.EncoderConfig{
 
 // 创建日志记录器
 func newLogger(name string, opts *Options) *zap.Logger {
-	logger, exists := loggers[name]
-	if exists {
-		return logger
-	}
-
 	var level zap.AtomicLevel
 	var cores []zapcore.Core
 	var zapopts []zap.Option
@@ -138,32 +133,22 @@ func newLogger(name string, opts *Options) *zap.Logger {
 	}
 
 	// 创建日志记录器
-	logger = zap.New(
+	logger := zap.New(
 		zapcore.NewTee(cores...),
 		zapopts...,
 	)
 
-	loggers[name] = logger
 	return logger
 }
 
-// 获取包含缺省配置的日志记录器
-func GetDefault(name string) *zap.Logger {
-	return newLogger(name, &Options{
-		LevelProd:      zap.WarnLevel,
-		LevelNotProd:   zap.DebugLevel,
-		NoUniFile:      false,
-		NoErrorFile:    false,
-		ConsoleNot:     true,
-		ConsoleAll:     false,
-		ConsoleProd:    false,
-		ConsoleNotProd: false,
-		NoCaller:       false,
-	})
-}
-
 // 获取日志记录器
-func Get(name string, setOpts ...SetOption) *zap.Logger {
+func GetLogger(name string, setOpts ...SetOption) *zap.Logger {
+	// 已存在则直接返回
+	logger, exists := loggers[name]
+	if exists {
+		return logger
+	}
+
 	// 默认配置项
 	opts := &Options{
 		LevelProd:      zap.WarnLevel,
@@ -182,5 +167,9 @@ func Get(name string, setOpts ...SetOption) *zap.Logger {
 		setOpts[i](opts)
 	}
 
-	return newLogger(name, opts)
+	// 创建日志记录器
+	logger = newLogger(name, opts)
+
+	loggers[name] = logger
+	return logger
 }
