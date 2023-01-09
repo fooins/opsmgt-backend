@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/fooins/opsmgt-backend/src/libraries/config"
 	"github.com/fooins/opsmgt-backend/src/libraries/errors"
 	"github.com/fooins/opsmgt-backend/src/libraries/log"
 	"go.uber.org/zap"
@@ -28,6 +29,10 @@ func main() {
 			)
 		}
 	}()
+
+	// 加载配置
+	config.Load()
+	logger.Info("加载配置成功")
 
 	// 启动 Web 服务
 	logger.Info("Web服务启动成功")

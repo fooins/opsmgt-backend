@@ -6,8 +6,6 @@ import "github.com/spf13/viper"
 func setDefaults() {
 	// 服务配置
 	viper.SetDefault("server", map[string]any{
-		// 主机名
-		"host": "127.0.0.1",
 		// 端口号
 		"port": 8080,
 	})
