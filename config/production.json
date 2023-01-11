@@ -1,1 +1,21 @@
-{}
+{
+  "server": {
+    "port": 8080
+  },
+  "db": {
+    "host": "",
+    "port": 3306,
+    "username": "",
+    "password": "",
+    "database": "opsmgt"
+  },
+  "crypto": {
+    "aesKey": ""
+  },
+  "redis": {
+    "host": "",
+    "port": 6379,
+    "password": "",
+    "db": 0
+  }
+}

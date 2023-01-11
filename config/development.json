@@ -1,9 +1,21 @@
 {
+  "server": {
+    "port": 8080
+  },
   "db": {
+    "host": "127.0.0.1",
+    "port": 3306,
     "username": "root",
-    "password": "123456"
+    "password": "123456",
+    "database": "opsmgt"
   },
   "crypto": {
     "aesKey": "zmb6ja36v6q45ejob1z2upbxy5qd5c9i"
+  },
+  "redis": {
+    "host": "127.0.0.1",
+    "port": 6379,
+    "password": "123456",
+    "db": 0
   }
 }
